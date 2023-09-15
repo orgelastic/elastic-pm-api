@@ -89,7 +89,7 @@ func (app *BaseApp) initDatabase() error {
 	}
 
 	db, err := db.NewPostgresDB(
-		app.config.DATABASE_URL,
+		app.config.DatabaseURL,
 		db.WithConnMaxIdleTime(time.Duration(maxIdleConns)),
 		db.WithMaxIdleConns(maxIdleConns),
 		db.WithMaxOpenConns(maxOpenConns),

@@ -6,3 +6,6 @@ SUPERTOKENS:
   API_KEY: "somekey"
 GIN_MODE: release
 DATABASE_URL: "postgres://postgres:postgres@localhost:5432/postgres"
+GOOGLE:
+  CLIENT_ID: "dd3fd813-402e-4027-a6b2-68cf075598e7"
+  CLIENT_SECRET: "eeed1d35-cbe4-481a-94cd-edebd5b3847e"

@@ -10,8 +10,12 @@ type Config struct {
 		ConnectionUrl string `mapstructure:"CONNECTION_URL"`
 		ApiKey        string `mapstructure:"API_KEY"`
 	} `mapstructure:"SUPERTOKENS"`
-	GinMode      string `mapstructure:"GIN_MODE"`
-	DATABASE_URL string `mapstructure:"DATABASE_URL"`
+	GinMode     string `mapstructure:"GIN_MODE"`
+	DatabaseURL string `mapstructure:"DATABASE_URL"`
+	Google      struct {
+		ClientID     string `mapstructure:"CLIENT_ID"`
+		ClientSecret string `mapstructure:"CLIENT_SECRET"`
+	} `mapstructure:"GOOGLE"`
 }
 
 func Init() (*Config, error) {

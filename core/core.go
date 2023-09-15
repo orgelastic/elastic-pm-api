@@ -19,4 +19,8 @@ type App interface {
 	// OnAfterAccountCreated hook is triggered after an account is created in identity service (SuperTokens for e.g)
 	// This is useful when you want to create an user in your database after an account is created in identity service
 	OnAfterAccountCreated() *hook.Hook[*AccountCreatedEvent]
+
+	// OnUnauthorisedAccess Thrown when a protected backend API is accessed without a session.
+	// The default bahaviour of this is to clear session tokens (if any) and send a 401 to the frontend.
+	OnUnauthorisedAccess() *hook.Hook[*UnauthorisedAccessEvent]
 }

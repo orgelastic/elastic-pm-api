@@ -2,9 +2,11 @@ package core
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/supertokens/supertokens-golang/recipe/dashboard"
 	"github.com/supertokens/supertokens-golang/recipe/session"
+	"github.com/supertokens/supertokens-golang/recipe/session/sessmodels"
 	"github.com/supertokens/supertokens-golang/recipe/thirdparty/tpmodels"
 	"github.com/supertokens/supertokens-golang/recipe/thirdpartyemailpassword"
 	"github.com/supertokens/supertokens-golang/recipe/thirdpartyemailpassword/tpepmodels"
@@ -104,7 +106,14 @@ func initSuperToken(app App) error {
 					},
 				},
 			}),
-			session.Init(nil), // initializes session features
+
+			session.Init(&sessmodels.TypeInput{
+				ErrorHandlers: &sessmodels.ErrorHandlers{
+					OnUnauthorised: func(message string, req *http.Request, res http.ResponseWriter) error {
+						return app.OnUnauthorisedAccess().Trigger(&UnauthorisedAccessEvent{message, req, res})
+					},
+				},
+			}),
 			dashboard.Init(nil),
 		},
 	})

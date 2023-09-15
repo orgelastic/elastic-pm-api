@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/stewie1520/elasticpmapi/api/middleware"
+	"github.com/stewie1520/elasticpmapi/api/response"
 	"github.com/stewie1520/elasticpmapi/core"
 	"github.com/stewie1520/elasticpmapi/usecases"
 	"github.com/supertokens/supertokens-golang/recipe/session"
@@ -14,15 +15,15 @@ type userApi struct {
 	app core.App
 }
 
-func bindUserApi(app core.App, ginEngine *gin.Engine) *userApi {
+func bindUserApi(app core.App, ginEngine *gin.Engine) error {
 	api := &userApi{
 		app: app,
 	}
 
-	subGroup := ginEngine.Group("/user")
-	subGroup.GET("/me", middleware.VerifySession(nil), api.getUser)
+	subGroup := ginEngine.Group("/user", middleware.VerifySession(nil))
+	subGroup.GET("/me", api.getUser)
 
-	return api
+	return nil
 }
 
 func (api *userApi) getUser(c *gin.Context) {
@@ -32,11 +33,8 @@ func (api *userApi) getUser(c *gin.Context) {
 	q.AccountID = sessionContainer.GetUserID()
 
 	if user, err := q.Execute(); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
+		response.NewBadRequestError("", err).WithGin(c)
 	} else {
 		c.JSON(http.StatusOK, user)
 	}
-
 }

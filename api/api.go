@@ -17,21 +17,16 @@ func InitApi(app core.App) (*gin.Engine, error) {
 	engine := gin.New()
 	engine.Use(middleware.Cors(app))
 	engine.Use(middleware.SuperToken)
-	handlerUnAuthorisedError(app)
+	handleUnAuthorisedError(app)
 
-	var err error
-
-	err = bindUserApi(app, engine)
-	if err != nil {
-		return nil, err
-	}
+	bindUserApi(app, engine)
 
 	// TODO: add more api group here
 
 	return engine, nil
 }
 
-func handlerUnAuthorisedError(app core.App) {
+func handleUnAuthorisedError(app core.App) {
 	app.OnUnauthorisedAccess().Add(func(event *core.UnauthorisedAccessEvent) error {
 		response.
 			NewUnauthorizedError(event.Message, nil).

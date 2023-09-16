@@ -15,21 +15,26 @@ type userApi struct {
 	app core.App
 }
 
-func bindUserApi(app core.App, ginEngine *gin.Engine) error {
+func bindUserApi(app core.App, ginEngine *gin.Engine) {
 	api := &userApi{
 		app: app,
 	}
 
 	subGroup := ginEngine.Group("/user", middleware.VerifySession(nil))
-	subGroup.GET("/me", api.getUser)
-
-	return nil
+	subGroup.GET("/me", api.getCurrentUserInfo)
 }
 
-func (api *userApi) getUser(c *gin.Context) {
+// getCurrentUserInfo Return current logged in user information
+// @Summary Get current user information
+// @Description Return current logged in user information
+// @Tags profile
+// @Accept json
+// @Produce json
+// @Success 200 {object} usecases.GetUserByAccountIDResponse
+// @Router /user/me [get]
+func (api *userApi) getCurrentUserInfo(c *gin.Context) {
 	q := usecases.NewGetUserByAccountIDQuery(api.app)
 	sessionContainer := session.GetSessionFromRequestContext(c.Request.Context())
-	// TODO: this is wrong, fix later
 	q.AccountID = sessionContainer.GetUserID()
 
 	if user, err := q.Execute(); err != nil {

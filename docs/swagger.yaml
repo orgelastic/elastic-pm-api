@@ -1,0 +1,38 @@
+basePath: /
+definitions:
+  types.DateTime:
+    type: object
+  usecases.GetUserByAccountIDResponse:
+    properties:
+      accountId:
+        type: string
+      createdAt:
+        $ref: '#/definitions/types.DateTime'
+      fullName:
+        type: string
+      id:
+        type: string
+      updatedAt:
+        $ref: '#/definitions/types.DateTime'
+    type: object
+info:
+  contact: {}
+  title: ElasticPM API
+  version: "1.0"
+paths:
+  /user/me:
+    get:
+      consumes:
+      - application/json
+      description: Return current logged in user information
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/usecases.GetUserByAccountIDResponse'
+      summary: Get current user information
+      tags:
+      - profile
+swagger: "2.0"

@@ -44,9 +44,14 @@ gen-sqlc: ### Generate sqlc
 linter-golangci: ### check by golangci linter
 	golangci-lint run
 
+.PHONY: swag-init
+swag-init: ### Generate swagger documentation
+	swag init -dir ./cmd/main/,./api -parseDependency -parseInternal
+
 bin-deps:
 	GOBIN=$(LOCAL_BIN) go install github.com/go-delve/delve/cmd/dlv@latest
 	GOBIN=$(LOCAL_BIN) go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(LOCAL_BIN) v1.54.2
 	GOBIN=$(LOCAL_BIN) go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
 	curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh -s -- -b $(LOCAL_BIN)
+	GOBIN=$(LOCAL_BIN) go install github.com/swaggo/swag/cmd/swag@latest

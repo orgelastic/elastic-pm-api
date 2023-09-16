@@ -7,9 +7,10 @@ import (
 	"github.com/go-ozzo/ozzo-validation/v4/is"
 	"github.com/stewie1520/elasticpmapi/core"
 	"github.com/stewie1520/elasticpmapi/daos/dao_user"
+	"github.com/stewie1520/elasticpmapi/tools/types"
 )
 
-var _ Query[dao_user.User] = (*GetUserByAccountIDQuery)(nil)
+var _ Query[GetUserByAccountIDResponse] = (*GetUserByAccountIDQuery)(nil)
 
 func NewGetUserByAccountIDQuery(app core.App) *GetUserByAccountIDQuery {
 	return &GetUserByAccountIDQuery{
@@ -25,14 +26,28 @@ type GetUserByAccountIDQuery struct {
 	AccountID string `json:"accountId"`
 }
 
+type GetUserByAccountIDResponse struct {
+	ID        string         `json:"id"`
+	AccountId string         `json:"accountId"`
+	CreatedAt types.DateTime `json:"createdAt"`
+	UpdatedAt types.DateTime `json:"updatedAt"`
+	FullName  string         `json:"fullName"`
+}
+
 // Execute implements Query.
-func (q *GetUserByAccountIDQuery) Execute() (dao_user.User, error) {
+func (q *GetUserByAccountIDQuery) Execute() (GetUserByAccountIDResponse, error) {
 	if err := q.Validate(); err != nil {
-		return dao_user.User{}, err
+		return GetUserByAccountIDResponse{}, err
 	}
 
 	user, err := q.dao.GetUserByAccountID(context.Background(), q.AccountID)
-	return user, err
+	return GetUserByAccountIDResponse{
+		ID:        user.ID.String(),
+		AccountId: user.AccountId,
+		CreatedAt: user.CreatedAt,
+		UpdatedAt: user.UpdatedAt,
+		FullName:  user.FullName.String,
+	}, err
 }
 
 // Validate implements Query.

@@ -1,23 +1,30 @@
 package db
 
 import (
-	"database/sql"
+	"context"
 	"fmt"
 	"os"
 
+	"github.com/jackc/pgx/v5/pgxpool"
 	_ "github.com/lib/pq"
 )
 
-func NewPostgresDB(connectionURL string, options ...Option) (*sql.DB, error) {
-	conn, err := sql.Open("postgres", connectionURL)
-
+func NewPostgresDBX(connectionURL string, options ...Option) (*pgxpool.Pool, error) {
+	config, err := pgxpool.ParseConfig(connectionURL)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Unable to parse connection pool config: %v\n", err)
 		return nil, err
 	}
 
 	for _, option := range options {
-		option(conn)
+		option(config)
+	}
+
+	conn, err := pgxpool.NewWithConfig(context.Background(), config)
+
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unable to create connection pool: %v\n", err)
+		return nil, err
 	}
 
 	fmt.Println("Connected to database 🎉")

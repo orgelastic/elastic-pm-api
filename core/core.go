@@ -1,15 +1,14 @@
 package core
 
 import (
-	"database/sql"
-
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/stewie1520/elasticpmapi/config"
 	"github.com/stewie1520/elasticpmapi/daos"
 	hook "github.com/stewie1520/elasticpmapi/hooks"
 )
 
 type App interface {
-	DB() *sql.DB
+	DB() *pgxpool.Pool
 	Dao() *daos.Dao
 
 	Bootstrap() error

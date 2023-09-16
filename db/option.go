@@ -1,26 +1,21 @@
 package db
 
 import (
-	"database/sql"
 	"time"
+
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-type Option func(*sql.DB)
-
-func WithMaxIdleConns(n int) Option {
-	return func(db *sql.DB) {
-		db.SetMaxIdleConns(n)
-	}
-}
-
-func WithMaxOpenConns(n int) Option {
-	return func(db *sql.DB) {
-		db.SetMaxOpenConns(n)
-	}
-}
+type Option func(*pgxpool.Config)
 
 func WithConnMaxIdleTime(t time.Duration) Option {
-	return func(db *sql.DB) {
-		db.SetConnMaxIdleTime(t * time.Minute)
+	return func(config *pgxpool.Config) {
+		config.MaxConnIdleTime = t
+	}
+}
+
+func WithMaxOpenConns(n int32) Option {
+	return func(config *pgxpool.Config) {
+		config.MaxConns = n
 	}
 }

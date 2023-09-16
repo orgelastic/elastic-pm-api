@@ -11,6 +11,41 @@ sql:
         package: "dao_user"
         out: "daos/dao_user"
         emit_json_tags: true
-        overrides:
+        sql_package: "pgx/v5"
+        overrides: &defaults_overrides
           - db_type: "pg_catalog.timestamptz"
             go_type: "github.com/stewie1520/elasticpmapi/tools/types.DateTime"
+          - db_type: "uuid"
+            go_type: "github.com/google/uuid.UUID"
+          - db_type: "uuid"
+            go_type: "github.com/google/uuid.NullUUID"
+            nullable: true
+          - db_type: "pg_catalog.bool"
+            go_type: "database/sql.NullBool"
+            nullable: true
+          - db_type: "pg_catalog.float8"
+            go_type: "database/sql.NullFloat64"
+            nullable: true
+          - db_type: "pg_catalog.int4"
+            go_type: "database/sql.NullInt32"
+            nullable: true
+          - db_type: "pg_catalog.int8"
+            go_type: "database/sql.NullInt64"
+            nullable: true
+          - db_type: "pg_catalog.varchar"
+            go_type: "database/sql.NullString"
+            nullable: true
+          - db_type: "text"
+            go_type: "database/sql.NullString"
+            nullable: true
+          - db_type: "pg_catalog.interval"
+            go_type: "time.Duration"
+          - db_type: "pg_catalog.interval"
+            # It seems like this could be the simpler `go_type: "*time.Duration"`, but
+            # that outputs double points like `**time.Duration` for reasons that are
+            # beyond me (bug?). The expanded version of `go_type` usage below works.
+            go_type:
+              import: "time"
+              type: "Duration"
+              pointer: true
+            nullable: true

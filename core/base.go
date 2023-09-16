@@ -1,9 +1,9 @@
 package core
 
 import (
-	"database/sql"
 	"time"
 
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/stewie1520/elasticpmapi/config"
 	"github.com/stewie1520/elasticpmapi/daos"
 	"github.com/stewie1520/elasticpmapi/db"
@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	DefaultDataMaxOpenConns int = 120
-	DefaultDataMaxIdleConns int = 20
+	DefaultDataMaxOpenConns int32 = 120
+	DefaultDataMaxIdleConns int   = 20
 )
 
 var _ App = (*BaseApp)(nil)
@@ -20,7 +20,7 @@ var _ App = (*BaseApp)(nil)
 type BaseAppConfig struct {
 	*config.Config
 	IsDebug          bool
-	DataMaxOpenConns int
+	DataMaxOpenConns int32
 	DataMaxIdleConns int
 }
 
@@ -62,7 +62,7 @@ func (app *BaseApp) Dao() *daos.Dao {
 	return app.dao
 }
 
-func (app *BaseApp) DB() *sql.DB {
+func (app *BaseApp) DB() *pgxpool.Pool {
 	if app.Dao() == nil {
 		return nil
 	}
@@ -94,10 +94,9 @@ func (app *BaseApp) initDatabase() error {
 		maxIdleConns = app.config.DataMaxIdleConns
 	}
 
-	db, err := db.NewPostgresDB(
+	db, err := db.NewPostgresDBX(
 		app.config.DatabaseURL,
 		db.WithConnMaxIdleTime(time.Duration(maxIdleConns)),
-		db.WithMaxIdleConns(maxIdleConns),
 		db.WithMaxOpenConns(maxOpenConns),
 	)
 

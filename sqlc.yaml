@@ -2,10 +2,7 @@ version: "2"
 sql:
   - engine: "postgresql"
     queries: "daos/queries/user.query.sql"
-    schema: 
-      - "db/migrations/000001_create-user-table.up.sql"
-      - "db/migrations/000002_add-name-to-table-user.up.sql"
-      - "db/migrations/000003_update-user-table.up.sql"
+    schema: "db/migrations"
     gen:
       go:
         package: "dao_user"

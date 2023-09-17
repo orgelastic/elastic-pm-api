@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	DefaultDataMaxOpenConns int32 = 120
-	DefaultDataMaxIdleConns int   = 20
+	DefaultDataMaxOpenConns int = 120
+	DefaultDataMaxIdleConns int = 20
 )
 
 var _ App = (*BaseApp)(nil)
@@ -20,7 +20,7 @@ var _ App = (*BaseApp)(nil)
 type BaseAppConfig struct {
 	*config.Config
 	IsDebug          bool
-	DataMaxOpenConns int32
+	DataMaxOpenConns int
 	DataMaxIdleConns int
 }
 

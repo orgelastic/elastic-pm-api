@@ -14,8 +14,8 @@ func WithConnMaxIdleTime(t time.Duration) Option {
 	}
 }
 
-func WithMaxOpenConns(n int32) Option {
+func WithMaxOpenConns(n int) Option {
 	return func(config *pgxpool.Config) {
-		config.MaxConns = n
+		config.MaxConns = int32(n)
 	}
 }

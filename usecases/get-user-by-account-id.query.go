@@ -41,13 +41,17 @@ func (q *GetUserByAccountIDQuery) Execute() (GetUserByAccountIDResponse, error) 
 	}
 
 	user, err := q.dao.GetUserByAccountID(context.Background(), q.AccountID)
+	if err != nil {
+		return GetUserByAccountIDResponse{}, err
+	}
+
 	return GetUserByAccountIDResponse{
 		ID:        user.ID.String(),
 		AccountId: user.AccountId,
 		CreatedAt: user.CreatedAt,
 		UpdatedAt: user.UpdatedAt,
 		FullName:  user.FullName.String,
-	}, err
+	}, nil
 }
 
 // Validate implements Query.

@@ -1,3 +1,0 @@
-[submodule "api/proto"]
-	path = api/proto
-	url = git@github.com:orgelastic/elastic-grpc.git

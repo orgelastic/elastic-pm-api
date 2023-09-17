@@ -1,5 +1,11 @@
 ## Getting Started 🎃
 
+Update submodules
+
+```
+git submodule update --init
+```
+
 ```sh
 docker-compose up -d
 cp ./config.example.yaml ./config.yaml

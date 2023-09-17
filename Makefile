@@ -40,6 +40,12 @@ gen-migration: ### Generate a new migration file
 gen-sqlc: ### Generate sqlc
 	sqlc generate
 
+.PHONY: gen-grpc
+gen-grpc: ### Generate grpc
+	protoc --go_out=. --go_opt=paths=source_relative \
+    --go-grpc_out=. --go-grpc_opt=paths=source_relative \
+    api/proto/src/*.proto
+
 .PHONY: linter-golangci
 linter-golangci: ### check by golangci linter
 	golangci-lint run
@@ -55,3 +61,5 @@ bin-deps:
 	GOBIN=$(LOCAL_BIN) go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
 	curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh -s -- -b $(LOCAL_BIN)
 	GOBIN=$(LOCAL_BIN) go install github.com/swaggo/swag/cmd/swag@latest
+	GOBIN=$(LOCAL_BIN) go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28
+	GOBIN=$(LOCAL_BIN) go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2

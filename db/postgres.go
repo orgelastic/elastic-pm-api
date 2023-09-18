@@ -21,9 +21,14 @@ func NewPostgresDBX(connectionURL string, options ...Option) (*pgxpool.Pool, err
 	}
 
 	conn, err := pgxpool.NewWithConfig(context.Background(), config)
-
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to create connection pool: %v\n", err)
+		return nil, err
+	}
+
+	err = conn.Ping(context.Background())
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		return nil, err
 	}
 

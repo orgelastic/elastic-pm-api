@@ -4,6 +4,7 @@ import "github.com/spf13/viper"
 
 type Config struct {
 	Port          int16  `mapstructure:"PORT"`
+	GrpcPort      int16  `mapstructure:"GRPC_PORT"`
 	ApiDomain     string `mapstructure:"API_DOMAIN"`
 	WebsiteDomain string `mapstructure:"WEBSITE_DOMAIN"`
 	SuperTokens   struct {

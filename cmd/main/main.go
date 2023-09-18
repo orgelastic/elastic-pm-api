@@ -38,7 +38,7 @@ func main() {
 
 	usecases.AddHandlersToHook(app)
 
-	lis, err := net.Listen("tcp", ":8001")
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", cfg.GrpcPort))
 	panicIfError(err)
 
 	gsrv, err := grpc.NewUserServer(app)

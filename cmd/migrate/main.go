@@ -25,7 +25,7 @@ func main() {
 		log.Fatalf("MIGRATION_DIR_PATH is not set")
 	}
 
-	databaseURL := cfg.DATABASE_URL
+	databaseURL := cfg.DatabaseURL
 
 	if !strings.HasSuffix(databaseURL, "?sslmode=disable") {
 		databaseURL += "?sslmode=disable"

@@ -29,14 +29,14 @@ type BaseApp struct {
 	dao    *daos.Dao
 
 	onAfterAccountCreated *hook.Hook[*AccountCreatedEvent]
-	onUnauthorisedAccess  *hook.Hook[*UnauthorisedAccessEvent]
+	onUnauthorisedAccess  *hook.Hook[*UnauthorizedAccessEvent]
 }
 
 func NewBaseApp(config BaseAppConfig) *BaseApp {
 	app := &BaseApp{
 		config:                config,
 		onAfterAccountCreated: &hook.Hook[*AccountCreatedEvent]{},
-		onUnauthorisedAccess:  &hook.Hook[*UnauthorisedAccessEvent]{},
+		onUnauthorisedAccess:  &hook.Hook[*UnauthorizedAccessEvent]{},
 	}
 
 	return app
@@ -78,7 +78,7 @@ func (app *BaseApp) OnAfterAccountCreated() *hook.Hook[*AccountCreatedEvent] {
 	return app.onAfterAccountCreated
 }
 
-func (app *BaseApp) OnUnauthorisedAccess() *hook.Hook[*UnauthorisedAccessEvent] {
+func (app *BaseApp) OnUnauthorizedAccess() *hook.Hook[*UnauthorizedAccessEvent] {
 	return app.onUnauthorisedAccess
 }
 

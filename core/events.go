@@ -13,7 +13,7 @@ type AccountCreatedEvent struct {
 	TenantIds []string `json:"tenantIds"`
 }
 
-type UnauthorisedAccessEvent struct {
+type UnauthorizedAccessEvent struct {
 	Message string
 	Req     *http.Request
 	Res     http.ResponseWriter

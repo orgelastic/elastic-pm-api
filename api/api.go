@@ -17,7 +17,7 @@ func InitApi(app core.App) (*gin.Engine, error) {
 	engine := gin.New()
 	engine.Use(middleware.Cors(app))
 	engine.Use(middleware.SuperToken)
-	handleUnAuthorisedError(app)
+	handleUnAuthorizedError(app)
 
 	bindUserApi(app, engine)
 
@@ -26,8 +26,8 @@ func InitApi(app core.App) (*gin.Engine, error) {
 	return engine, nil
 }
 
-func handleUnAuthorisedError(app core.App) {
-	app.OnUnauthorisedAccess().Add(func(event *core.UnauthorisedAccessEvent) error {
+func handleUnAuthorizedError(app core.App) {
+	app.OnUnauthorizedAccess().Add(func(event *core.UnauthorizedAccessEvent) error {
 		response.
 			NewUnauthorizedError(event.Message, nil).
 			WithResponseWriter(event.Res)

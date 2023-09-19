@@ -110,7 +110,7 @@ func initSuperToken(app App) error {
 			session.Init(&sessmodels.TypeInput{
 				ErrorHandlers: &sessmodels.ErrorHandlers{
 					OnUnauthorised: func(message string, req *http.Request, res http.ResponseWriter) error {
-						return app.OnUnauthorisedAccess().Trigger(&UnauthorisedAccessEvent{message, req, res})
+						return app.OnUnauthorizedAccess().Trigger(&UnauthorizedAccessEvent{message, req, res})
 					},
 				},
 			}),

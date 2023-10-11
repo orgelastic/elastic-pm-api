@@ -38,13 +38,13 @@ func main() {
 
 	usecases.AddHandlersToHook(app)
 
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", cfg.GrpcPort))
-	panicIfError(err)
-
-	gsrv, err := grpc.NewUserServer(app)
-	panicIfError(err)
-
 	go func() {
+		lis, err := net.Listen("tcp", fmt.Sprintf(":%d", cfg.GrpcPort))
+		panicIfError(err)
+
+		gsrv, err := grpc.NewUserServer(app)
+		panicIfError(err)
+
 		fmt.Println("GRPC server started 🚀")
 		panicIfError(gsrv.Serve(lis))
 	}()

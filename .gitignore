@@ -30,3 +30,5 @@ bin/
 config.yaml
 __debug_bin*
 bin-deps/
+.idea/
+.DS_Store

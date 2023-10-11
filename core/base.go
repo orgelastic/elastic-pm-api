@@ -29,14 +29,14 @@ type BaseApp struct {
 	dao    *daos.Dao
 
 	onAfterAccountCreated *hook.Hook[*AccountCreatedEvent]
-	onUnauthorisedAccess  *hook.Hook[*UnauthorizedAccessEvent]
+	onUnauthorizedAccess  *hook.Hook[*UnauthorizedAccessEvent]
 }
 
 func NewBaseApp(config BaseAppConfig) *BaseApp {
 	app := &BaseApp{
 		config:                config,
 		onAfterAccountCreated: &hook.Hook[*AccountCreatedEvent]{},
-		onUnauthorisedAccess:  &hook.Hook[*UnauthorizedAccessEvent]{},
+		onUnauthorizedAccess:  &hook.Hook[*UnauthorizedAccessEvent]{},
 	}
 
 	return app
@@ -79,7 +79,7 @@ func (app *BaseApp) OnAfterAccountCreated() *hook.Hook[*AccountCreatedEvent] {
 }
 
 func (app *BaseApp) OnUnauthorizedAccess() *hook.Hook[*UnauthorizedAccessEvent] {
-	return app.onUnauthorisedAccess
+	return app.onUnauthorizedAccess
 }
 
 func (app *BaseApp) initDatabase() error {
@@ -94,7 +94,7 @@ func (app *BaseApp) initDatabase() error {
 		maxIdleConns = app.config.DataMaxIdleConns
 	}
 
-	db, err := db.NewPostgresDBX(
+	pool, err := db.NewPostgresDBX(
 		app.config.DatabaseURL,
 		db.WithConnMaxIdleTime(time.Duration(maxIdleConns)),
 		db.WithMaxOpenConns(maxOpenConns),
@@ -104,7 +104,7 @@ func (app *BaseApp) initDatabase() error {
 		return err
 	}
 
-	app.dao = daos.New(db)
+	app.dao = daos.New(pool)
 
 	return nil
 }

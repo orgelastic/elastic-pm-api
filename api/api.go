@@ -15,6 +15,8 @@ func InitApi(app core.App) (*gin.Engine, error) {
 	}
 
 	engine := gin.New()
+	bindHealthApi(app, engine)
+
 	engine.Use(middleware.Cors(app))
 	engine.Use(middleware.SuperToken)
 	handleUnAuthorizedError(app)
